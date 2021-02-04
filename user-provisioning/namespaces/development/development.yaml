@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: development
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: devops
+  namespace: development
+
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: development
+  name: developer-permissions
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: developers-cli
+  namespace: development
+subjects:
+- kind: User
+  name: devops
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: developer-permissions
+  apiGroup: rbac.authorization.k8s.io
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: developers-web
+  namespace: development
+subjects:
+- kind: ServiceAccount
+  name: devops
+roleRef:
+  kind: Role
+  name: developer-permissions
+  apiGroup: rbac.authorization.k8s.io
+
+# kubectl config set-context developer --cluster=vdigitalgroup --namespace=development --user=devops
+# kubectl config use-context developer
+# kubectl config get-contexts

@@ -1,0 +1,83 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: oidc-client
+  name: oidc-client
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: oidc-client
+    spec:
+      containers:
+      - image: oidc-client:0.0.11
+        name: oidc-client
+        command: ["./main"]
+        ports:
+        - name: https
+          containerPort: 32001
+        volumeMounts:
+        - name: tls
+          mountPath: /etc/ssl
+        env:
+        - name: CLIENT-ID
+          valueFrom:
+            secretKeyRef:
+              name: oidc-client
+              key: client-id
+        - name: CLIENT-SECRET
+          valueFrom:
+            secretKeyRef:
+              name: oidc-client
+              key: client-secret
+        - name: REDIRECT-URI
+          valueFrom:
+            secretKeyRef:
+              name: oidc-client
+              key: redirect-uri
+        - name: ISSUER-URI
+          valueFrom:
+            secretKeyRef:
+              name: oidc-client
+              key: issuer-uri
+        - name: TLS-CERT
+          valueFrom:
+            secretKeyRef:
+              name: oidc-client
+              key: tls-cert
+        - name: TLS-KEY
+          valueFrom:
+            secretKeyRef:
+              name: oidc-client
+              key: tls-key
+        - name: LISTEN-ADDRESS
+          valueFrom:
+            secretKeyRef:
+              name: oidc-client
+              key: listen-address
+        - name: ISSUER-ROOT-CA
+          valueFrom:
+            secretKeyRef:
+              name: oidc-client
+              key: issuer-root-ca
+      volumes:
+      - name: tls
+        secret:
+          secretName: auth.vdigi.local.tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oidc-client
+spec:
+  type: NodePort
+  ports:
+  - name: oidc-client
+    port: 32001
+    protocol: TCP
+    targetPort: 32001
+    nodePort: 32001
+  selector:
+    app: oidc-client
