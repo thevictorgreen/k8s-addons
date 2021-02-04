@@ -1,0 +1,11 @@
+kind: EncryptionConfig
+apiVersion: v1
+resources:
+  - resources:
+    - secrets
+    providers:
+    - aescbc:
+        keys:
+        - name: cluster-encryption-policy
+          secret: yWmCdJTixj6y394MjRi8zxHS0JfEDicIwEjK2dYsgZs
+    - identity: {}

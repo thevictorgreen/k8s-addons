@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: msvc1-db-claim-restore
+  namespace: horsefly-development
+spec:
+  storageClassName: rook-ceph-block
+  dataSource:
+    name: msvc1-snapshot-1
+    kind: VolumeSnapshot
+    apiGroup: snapshot.storage.k8s.io
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi

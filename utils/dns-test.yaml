@@ -1,0 +1,111 @@
+# DNS TSHOOT
+# https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/
+---
+# Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cluster-utils
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dnsutils-m0
+  namespace: cluster-utils
+spec:
+  containers:
+  - name: dnsutils
+    image: gcr.io/kubernetes-e2e-test-images/dnsutils:1.3
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always
+  nodeSelector:
+    kubernetes.io/hostname: k8smaster000.management.skyfall.io
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dnsutils-m1
+  namespace: cluster-utils
+spec:
+  containers:
+  - name: dnsutils
+    image: gcr.io/kubernetes-e2e-test-images/dnsutils:1.3
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always
+  nodeSelector:
+    kubernetes.io/hostname: k8smaster001.management.skyfall.io
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dnsutils-m2
+  namespace: cluster-utils
+spec:
+  containers:
+  - name: dnsutils
+    image: gcr.io/kubernetes-e2e-test-images/dnsutils:1.3
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always
+  nodeSelector:
+    kubernetes.io/hostname: k8smaster002.management.skyfall.io
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dnsutils-w0
+  namespace: cluster-utils
+spec:
+  containers:
+  - name: dnsutils
+    image: gcr.io/kubernetes-e2e-test-images/dnsutils:1.3
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always
+  nodeSelector:
+    kubernetes.io/hostname: k8sworker000.management.skyfall.io
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dnsutils-w1
+  namespace: cluster-utils
+spec:
+  containers:
+  - name: dnsutils
+    image: gcr.io/kubernetes-e2e-test-images/dnsutils:1.3
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always
+  nodeSelector:
+    kubernetes.io/hostname: k8sworker001.management.skyfall.io
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dnsutils-w2
+  namespace: cluster-utils
+spec:
+  containers:
+  - name: dnsutils
+    image: gcr.io/kubernetes-e2e-test-images/dnsutils:1.3
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always
+  nodeSelector:
+    kubernetes.io/hostname: k8sworker002.management.skyfall.io
+

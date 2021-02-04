@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: my-nginx-ingress
+  namespace: sample
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  tls:
+  - hosts:
+    - cash.vdigi.local
+    secretName: cash.vdigi.local.tls
+  rules:
+  - host: cash.vdigi.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: my-nginx-service
+          servicePort: 80
